@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormikContextType, FormikState, FormikErrors, FormikTouched, FormikValues } from './types';
+import { FormikContextType, FormikState, FormikErrors, FormikTouched } from './types';
 import invariant from 'tiny-warning';
 
 /**
@@ -60,7 +60,7 @@ export interface FormikMethodsContextValue<Values = any> {
   resetForm: (nextState?: Partial<FormikState<Values>>) => void;
   submitForm: () => Promise<any>;
   validateForm: (values?: Values) => Promise<FormikErrors<Values>>;
-  validateField: (name: string) => Promise<void> | Promise<string>;
+  validateField: (name: string) => Promise<void> | Promise<string | undefined>;
 
   // Setters
   setErrors: (errors: FormikErrors<Values>) => void;
@@ -352,9 +352,17 @@ export function useFormikContext<Values = any>(): FormikContextType<Values> {
 // =====================================================================
 
 /**
- * @deprecated Use FormikProvider instead
+ * @deprecated Use useFormikContext() hook or selective hooks instead
+ *
+ * Legacy consumer that combines all contexts for backwards compatibility.
+ * This is used by the deprecated connect() HOC.
  */
-export const FormikConsumer = FormikValuesContext.Consumer;
+export const FormikConsumer: React.FC<{
+  children: (value: FormikContextType<any>) => React.ReactNode;
+}> = ({ children }) => {
+  const context = useFormikContext();
+  return <>{children(context)}</>;
+};
 
 /**
  * Legacy context - not recommended for use in v3

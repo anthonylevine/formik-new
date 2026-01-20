@@ -37,7 +37,6 @@ export function SubmitButton({
 }) {
   // React 19: useFormStatus tracks parent <form> submission state
   // Note: This requires React 19+ and only works inside <form> with action prop
-  const pending = false; // Fallback for now - will use useFormStatus when available
 
   // Try to use useFormStatus if available (React 19+)
   try {

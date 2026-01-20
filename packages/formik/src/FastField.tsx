@@ -54,7 +54,7 @@ export const FastField = React.memo<FastFieldAttributes<any>>(
     as: asElement = 'input',
     children,
     ...props
-  }) {
+  }: FastFieldAttributes<any>) {
     const { values } = useFormikValues();
     const { errors, touched, isSubmitting } = useFormikState();
     const { initialValues, initialErrors, initialTouched } = useFormikMetadata();

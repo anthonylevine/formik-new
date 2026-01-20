@@ -21,20 +21,19 @@
     "prettier": "^2.1.2",
     "react-hook-form": "^7.45.0",
     "tslib": "^2.5.3",
-    "tsx": "^4.19.0",
-    "turbo": "^2.6.0"
+    "tsx": "^4.19.0"
   },
   "workspaces": [
     "packages/*",
     "website"
   ],
   "scripts": {
-    "dev": "turbo run start",
-    "test": "turbo run test --filter='./packages/*' --",
-    "build": "turbo run build",
-    "build:benchmark": "yarn build --filter=formik",
-    "build:codesandbox": "yarn build --filter='./packages/*'",
-    "prepublish": "turbo run build --filter='./packages/*'",
+    "dev": "npm run start --workspace=packages/formik",
+    "test": "npm run test --workspaces --if-present",
+    "build": "npm run build --workspace=packages/formik",
+    "build:formik": "npm run build --workspace=packages/formik",
+    "build:all": "npm run build --workspaces --if-present",
+    "prepublish": "npm run build --workspace=packages/formik",
     "format": "prettier --write 'examples/**/*' 'packages/*/src/**/*' 'website/src/**/*.{ts,tsx,js,jsx,md,mdx}' 'app/pages/**/*'  'packages/*/test/**/*' 'README.md'",
     "changeset": "changeset",
     "release": "changeset publish",
@@ -43,7 +42,7 @@
     "e2e": "playwright test",
     "precommit": "lint-staged",
     "e2e:ui": "playwright test --ui",
-    "start:app": "turbo run build --filter formik... && yarn --cwd packages/formik link && yarn --cwd ./app link formik && yarn --cwd ./app && yarn --cwd ./app run dev",
+    "start:app": "npm run build --workspace=packages/formik && npm --prefix packages/formik link && npm --prefix ./app link formik && npm --prefix ./app run dev",
     "benchmark": "tsx scripts/benchmark.tsx | tee output.txt"
   },
   "lint-staged": {

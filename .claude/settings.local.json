@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(grep:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(npm run build:*)",
+      "Bash(yarn install:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc --version)",
+      "Bash(npx tsc:*)"
     ]
   }
 }
