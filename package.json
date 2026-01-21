@@ -33,7 +33,6 @@
     "build": "npm run build --workspace=packages/formik",
     "build:formik": "npm run build --workspace=packages/formik",
     "build:all": "npm run build --workspaces --if-present",
-    "prepublish": "npm run build --workspace=packages/formik",
     "format": "prettier --write 'examples/**/*' 'packages/*/src/**/*' 'website/src/**/*.{ts,tsx,js,jsx,md,mdx}' 'app/pages/**/*'  'packages/*/test/**/*' 'README.md'",
     "changeset": "changeset",
     "release": "changeset publish",
