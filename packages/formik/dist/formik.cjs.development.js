@@ -8,7 +8,7 @@ var deepmerge = _interopDefault(require('deepmerge'));
 var React = require('react');
 var isEqual = _interopDefault(require('react-fast-compare'));
 var invariant = _interopDefault(require('tiny-warning'));
-var clone = _interopDefault(require('lodash/clone'));
+var clone$1 = _interopDefault(require('lodash/clone'));
 var toPath = _interopDefault(require('lodash/toPath'));
 
 function _extends() {
@@ -416,7 +416,7 @@ function getIn(obj, key, def, p) {
  */
 
 function setIn(obj, path, value) {
-  var res = clone(obj); // this keeps inheritance when obj is a class
+  var res = clone$1(obj); // this keeps inheritance when obj is a class
 
   var resVal = res;
   var i = 0;
@@ -427,7 +427,7 @@ function setIn(obj, path, value) {
     var currentObj = getIn(obj, pathArray.slice(0, i + 1));
 
     if (currentObj && (isObject(currentObj) || Array.isArray(currentObj))) {
-      resVal = resVal[currentPath] = clone(currentObj);
+      resVal = resVal[currentPath] = clone$1(currentObj);
     } else {
       var nextPath = pathArray[i + 1];
       resVal = resVal[currentPath] = isInteger(nextPath) && Number(nextPath) >= 0 ? [] : {};
@@ -495,6 +495,16 @@ function isPlainObject(value) {
   if (typeof value !== 'object' || value === null) return false;
   var proto = Object.getPrototypeOf(value);
   return proto === Object.prototype || proto === null;
+} // Polyfill for clone (not available in older Node/browsers)
+
+
+function clone(obj) {
+  if (typeof clone !== 'undefined') {
+    return clone(obj);
+  } // Fallback: JSON-based clone (works for plain objects)
+
+
+  return JSON.parse(JSON.stringify(obj));
 }
 
 function formikReducer(state, msg) {
@@ -624,10 +634,10 @@ function useFormik(_ref) {
       setIteration = _React$useState[1];
 
   var stateRef = React.useRef({
-    values: structuredClone(props.initialValues),
-    errors: structuredClone(props.initialErrors) || emptyErrors,
-    touched: structuredClone(props.initialTouched) || emptyTouched,
-    status: structuredClone(props.initialStatus),
+    values: clone(props.initialValues),
+    errors: clone(props.initialErrors) || emptyErrors,
+    touched: clone(props.initialTouched) || emptyTouched,
+    status: clone(props.initialStatus),
     isSubmitting: false,
     isValidating: false,
     submitCount: 0

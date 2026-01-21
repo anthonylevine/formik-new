@@ -7,6 +7,16 @@ function isPlainObject(value: any): boolean {
   const proto = Object.getPrototypeOf(value);
   return proto === Object.prototype || proto === null;
 }
+
+// Polyfill for clone (not available in older Node/browsers)
+function clone<T>(obj: T): T {
+  if (typeof clone !== 'undefined') {
+    return clone(obj);
+  }
+  // Fallback: JSON-based clone (works for plain objects)
+  return JSON.parse(JSON.stringify(obj)) as T;
+}
+
 import isEqual from 'react-fast-compare';
 import invariant from 'tiny-warning';
 import { FieldConfig } from './Field';
@@ -179,10 +189,10 @@ export function useFormik<Values extends FormikValues = FormikValues>({
 
   const [, setIteration] = React.useState(0);
   const stateRef = React.useRef<FormikState<Values>>({
-    values: structuredClone(props.initialValues),
-    errors: structuredClone(props.initialErrors) || emptyErrors,
-    touched: structuredClone(props.initialTouched) || emptyTouched,
-    status: structuredClone(props.initialStatus),
+    values: clone(props.initialValues),
+    errors: clone(props.initialErrors) || emptyErrors,
+    touched: clone(props.initialTouched) || emptyTouched,
+    status: clone(props.initialStatus),
     isSubmitting: false,
     isValidating: false,
     submitCount: 0,
